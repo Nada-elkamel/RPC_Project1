@@ -1,6 +1,9 @@
 1) Préparation de l'environnement:
    - Installation de rpcgen... sur Ubuntu
+     
 2) Création de fichier de définition de l’interface RPC
+
+   
 /* calcul.x : définition de l'interface RPC */
 program CAL_BIN_PROG {
     version CAL_VERS_ONE {
@@ -14,9 +17,13 @@ struct Param {
     int base;
     int exposant;
 };
+
+
 3) Génération des fichiers nécessaires avec rpcgen
 rpcgen -a calcul.x
 4) Implémentation des fonctions du serveur(calcul_svc.c)
+
+
 #include "calcul.h"
 #include <stdio.h>
 #include <math.h>
@@ -37,14 +44,16 @@ long int *dec2bin_1_svc(int *n, struct svc_req *rqstp) {
     }
     return &result;
 }
+
+
 make -f Makefile.calcul => compiler le serveur (cette commande ne fonctionne plus)
 ./calcul_svc => démarrer le serveur
 rpcinfo -p => vérifier s'il est bien enregistré
 
 5) Implémentation du client (calcul_clnt.c)
+
 #include "calcul.h"
 #include <stdio.h>
-
 int main(int argc, char *argv[]) {
     CLIENT *clnt;
     long int *result;
@@ -75,6 +84,7 @@ int main(int argc, char *argv[]) {
     clnt_destroy(clnt);
     return 0;
 }
+
 make -f Makefile.calcul => compiler le client
 ./calcul_clnt 2 3 => tester le client localement
 ./calcul_clnt <0x20000001> 2 3 => tester à distance 
